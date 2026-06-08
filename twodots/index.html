@@ -1,0 +1,1271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="TwoDots Dental Clinic - Premium dental care in BTM Layout, Bangalore. Expert dentists, 19+ years of expertise. Book your appointment today." />
+  <title>TwoDots Dental Clinic</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="preload" as="image" href="images/clinic-workspace.webp" />
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    body { padding-top: 0; }
+    #floatWa { opacity: 1; pointer-events: all; transform: scale(1); transition: opacity 0.4s ease, transform 0.4s ease; }
+    /* Starts visible — JS hides it on hero section and shows on scroll */
+    #floatWa.hero-hidden { opacity: 0; pointer-events: none; transform: scale(0.7); }
+    /* Nav on home: subtle frosted backdrop so links are always readable */
+    #navbar {
+      background: rgba(234, 247, 253, 0.72);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    #navbar.scrolled {
+      background: rgba(255,255,255,0.97);
+      backdrop-filter: blur(14px);
+      box-shadow: 0 1px 0 var(--border), var(--shadow-sm);
+    }
+
+    /* ══════════════════════════════════════════════════════
+       HERO, full-bleed, single layout with cascading image
+    ══════════════════════════════════════════════════════ */
+    #hero {
+      position: relative;
+      min-height: 100svh;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      z-index: 0;
+      isolation: isolate;
+    }
+
+    /* Gradient base, light airy blue-white, consistent with clinic palette */
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, #EAF7FD 0%, #F4FAFE 45%, #EAF7FD 100%);
+      z-index: 0;
+    }
+
+    /* Clinic image, right side, tall, slightly inset from edge, no hard box cut */
+    .hero-img-wrap {
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: 52%;
+      z-index: 1;
+      overflow: hidden;
+    }
+    .hero-img-wrap::before {
+      /* Fade the image into the background on the left side */
+      content: '';
+      position: absolute;
+      top: 0; left: 0; bottom: 0;
+      width: 55%;
+      background: linear-gradient(to right, #EAF7FD 0%, rgba(234,247,253,0.7) 50%, transparent 100%);
+      z-index: 2;
+      pointer-events: none;
+    }
+    .hero-img-wrap::after {
+      /* Very subtle dark vignette on far right edge */
+      content: '';
+      position: absolute;
+      top: 0; right: 0; bottom: 0;
+      width: 20%;
+      background: linear-gradient(to left, rgba(234,247,253,0.4) 0%, transparent 100%);
+      z-index: 2;
+      pointer-events: none;
+    }
+    .hero-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: left center;
+      display: block;
+    }
+
+    /* Decorative blobs, subtle depth */
+    .hero-blob {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .hero-blob-1 {
+      width: 600px; height: 600px;
+      top: -160px; right: 35%;
+      background: radial-gradient(circle, rgba(0,174,239,0.07) 0%, transparent 70%);
+    }
+    .hero-blob-2 {
+      width: 350px; height: 350px;
+      bottom: -80px; left: -80px;
+      background: radial-gradient(circle, rgba(0,201,177,0.06) 0%, transparent 70%);
+    }
+
+    /* Teal left accent line */
+    .hero-accent-line {
+      position: absolute;
+      left: 0; top: 15%; bottom: 15%;
+      width: 4px;
+      background: linear-gradient(to bottom, transparent, var(--brand-blue) 30%, var(--accent-teal) 70%, transparent);
+      border-radius: 4px;
+      z-index: 3;
+    }
+
+    /* Content */
+    .hero-content {
+      position: relative;
+      z-index: 3;
+      max-width: 600px;
+      padding: calc(var(--nav-height) + 36px) 0 60px;
+    }
+
+    .hero-h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5.5vw, 3rem);
+      font-weight: 800;
+      line-height: 1.04;
+      color: var(--text-dark);
+      letter-spacing: -0.03em;
+      margin-bottom: 24px;
+      animation: hFadeUp 0.55s ease 0.15s both;
+    }
+    .hero-h1 em {
+      font-style: normal;
+      color: var(--brand-blue);
+    }
+    .hero-h1 em::after { display: none; }
+
+    .hero-p {
+      font-size: 1.1rem;
+      font-weight: 400;
+      color: var(--text-mid);
+      line-height: 1.78;
+      max-width: 500px;
+      margin-bottom: 40px;
+      animation: hFadeUp 0.55s ease 0.25s both;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 13px;
+      margin-bottom: 52px;
+      animation: hFadeUp 0.55s ease 0.35s both;
+    }
+
+    /* Stats row */
+    .hero-stats {
+      display: flex;
+      gap: 0;
+      border-top: 1.5px solid rgba(0,174,239,0.15);
+      padding-top: 32px;
+      animation: hFadeUp 0.55s ease 0.42s both;
+    }
+    .hero-stat {
+      flex: 1;
+      padding-right: 28px;
+      position: relative;
+    }
+    .hero-stat + .hero-stat {
+      padding-left: 28px;
+      padding-right: 28px;
+      border-left: 1.5px solid rgba(0,174,239,0.15);
+    }
+    .hero-stat:last-child { padding-right: 0; }
+    .stat-num {
+      font-family: var(--font-display);
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: var(--brand-blue);
+      line-height: 1;
+      margin-bottom: 5px;
+    }
+    .stat-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-light);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+
+
+    @keyframes hFadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── WHY US ──────────────────────────────────────────── */
+    #why {
+      padding: 100px 0;
+      background: var(--brand-blue);
+      position: relative;
+      overflow: hidden;
+    }
+    #why::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(circle at 18% 50%, rgba(255,255,255,0.06) 0%, transparent 55%),
+        radial-gradient(circle at 82% 15%, rgba(255,255,255,0.04) 0%, transparent 45%);
+    }
+    .why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+    .why-grid > .reveal-right { align-self: start; }
+    .why-grid .section-label { color: rgba(255,255,255,0.6); }
+    .why-grid .section-label::before { background: rgba(255,255,255,0.4); }
+    .why-grid .section-title { color: var(--white); }
+    .why-body p { font-size: 1rem; line-height: 1.8; color: rgba(255,255,255,0.72); margin-top: 20px; font-weight: 400; }
+    /* Unified 4-col card grid spanning full width, left 2 cols = features, right 2 cols = stats */
+    .why-cards-unified {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      gap: 14px;
+      margin-top: 36px;
+    }
+    .why-feat, .why-num-card {
+      border-radius: var(--radius-md);
+      padding: 22px 20px;
+      transition: background var(--transition), transform var(--transition);
+    }
+    .why-feat {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+    .why-feat:hover { background: rgba(255,255,255,0.16); transform: translateY(-3px); }
+    .why-feat-icon { font-size: 1.4rem; margin-bottom: 10px; }
+    .why-feat h4 { font-size: 14px; font-weight: 700; color: var(--white); margin-bottom: 5px; }
+    .why-feat p  { font-size: 13px; color: rgba(255,255,255,0.62); line-height: 1.55; }
+    .why-num-card {
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.18);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center;
+    }
+    .why-num-card:hover { background: rgba(255,255,255,0.2); transform: translateY(-4px); }
+    .why-big { font-family: var(--font-display); font-size: 2.6rem; font-weight: 800; color: var(--white); line-height: 1; margin-bottom: 8px; }
+    .why-label { font-size: 12.5px; color: rgba(255,255,255,0.62); font-weight: 500; line-height: 1.4; }
+
+    /* ── ABOUT SNIPPET ───────────────────────────────────── */
+    #about-snip { padding: 100px 0; background: var(--white); }
+    .about-snip-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: center; }
+    .about-img-wrap { position: relative; }
+    .about-main-img { border-radius: var(--radius-lg); overflow: hidden; aspect-ratio: 4/5; box-shadow: var(--shadow-lg); }
+    .about-main-img .img-slot { width: 100%; height: 100%; }
+    .about-sec-img { position: absolute; bottom: -24px; right: -24px; width: 52%; aspect-ratio: 1; border-radius: var(--radius-md); overflow: hidden; border: 5px solid var(--white); box-shadow: var(--shadow-md); }
+    .about-sec-img .img-slot { width: 100%; height: 100%; }
+    .about-badge { position: absolute; top: 28px; right: -18px; background: var(--accent-teal); color: var(--white); border-radius: var(--radius-md); padding: 14px 20px; box-shadow: 0 8px 28px rgba(0,201,177,0.4); z-index: 2; }
+    .badge-num { font-family: var(--font-display); font-size: 2rem; font-weight: 800; line-height: 1; display: block; }
+    .badge-text { font-size: 11px; opacity: 0.88; letter-spacing: 0.04em; margin-top: 4px; font-weight: 500; }
+    .about-body p { font-size: 1rem; line-height: 1.8; color: var(--text-mid); font-weight: 400; margin-top: 18px; }
+    .about-sign { display: flex; align-items: center; gap: 16px; border-top: 1.5px solid var(--border); padding-top: 24px; margin-top: 32px; }
+    .sign-name { font-family: var(--font-display); font-size: 1.35rem; font-weight: 800; color: var(--text-dark); letter-spacing: -0.01em; }
+    .sign-title { font-size: 12px; color: var(--text-light); font-weight: 500; margin-top: 3px; letter-spacing: 0.04em; }
+
+    /* ── SERVICES PREVIEW ────────────────────────────────── */
+    #services-prev { padding: 100px 0; background: var(--off-white); }
+    .srv-header { text-align: center; max-width: 600px; margin: 0 auto 56px; }
+    .srv-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 48px; }
+    .srv-card { background: var(--white); border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--border); transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition); }
+    .srv-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-md); border-color: var(--brand-blue-mid); }
+    .srv-img { aspect-ratio: 4/3; overflow: hidden; }
+    .srv-img .img-slot { width: 100%; height: 100%; }
+    .srv-card:hover .srv-img .img-slot img { transform: scale(1.06); }
+    .srv-body { padding: 18px 20px 22px; }
+    .srv-body h3 { font-family: var(--font-display); font-size: 1.05rem; font-weight: 700; color: var(--text-dark); margin-bottom: 7px; line-height: 1.3; }
+    .srv-body p  { font-size: 13.5px; color: var(--text-light); line-height: 1.65; }
+    .srv-tag { display: inline-block; margin-top: 10px; font-size: 10.5px; font-weight: 700; color: var(--brand-blue); background: var(--brand-blue-pale); padding: 3px 10px; border-radius: 100px; letter-spacing: 0.05em; }
+    .srv-footer { text-align: center; }
+
+    /* ── GALLERY STRIP ───────────────────────────────────── */
+    #gallery-strip { padding: 100px 0; background: var(--white); }
+    .gal-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 44px; flex-wrap: wrap; gap: 20px; }
+    .gal-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    .gal-item { border-radius: var(--radius-md); overflow: hidden; position: relative; background: var(--brand-blue-pale); cursor: zoom-in; }
+    .gal-item .img-slot { width: 100%; aspect-ratio: 16/10; min-height: unset; }
+    .gal-item:hover .img-slot img { transform: scale(1.05); }
+    .gal-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,174,239,0.55), transparent); opacity: 0; transition: opacity 0.4s ease; display: flex; align-items: flex-end; padding: 18px 20px; }
+    .gal-item:hover .gal-overlay { opacity: 1; }
+    .gal-overlay span { color: var(--white); font-size: 13.5px; font-weight: 600; }
+
+    /* ── RESPONSIVE ──────────────────────────────────────── */
+    @media (max-width: 1024px) {
+      .hero-img-wrap { width: 48%; }
+      .hero-reviews-badge { right: 50%; }
+      .srv-grid { grid-template-columns: repeat(2, 1fr); }
+      .why-grid { gap: 48px; }
+      .why-cards-unified { grid-template-columns: 1fr 1fr; }
+      .about-snip-grid { gap: 48px; }
+    }
+    @media (max-width: 768px) {
+      .hero-img-wrap { display: none; }
+      .hero-accent-line { display: none; }
+      .hero-reviews-badge { position: static; margin-top: 32px; min-width: unset; width: 100%; max-width: 300px; animation: none; opacity: 1; transform: none; }
+      .hero-content { max-width: 100%; padding-bottom: 60px; }
+      .hero-stats { gap: 0; }
+      .why-grid { grid-template-columns: 1fr; gap: 24px; }
+      .why-cards-unified { grid-template-columns: 1fr 1fr; }
+      .gal-grid { grid-template-columns: 1fr 1fr; }
+      .hero-scroll-cue { display: none; }
+      .srv-grid { grid-template-columns: 1fr 1fr !important; }
+      .services-grid { grid-template-columns: repeat(2,1fr) !important; }
+      .filter-row { gap: 7px; }
+      .filter-btn { font-size: 12px; padding: 7px 14px; }
+    }
+    @media (max-width: 480px) {
+      .hero-h1 { font-size: 2rem; }
+      .hero-p { font-size: 0.95rem; margin-bottom: 24px; }
+      .hero-actions { margin-bottom: 32px; }
+      .hero-stat + .hero-stat { padding-left: 12px; padding-right: 12px; }
+      .srv-grid { grid-template-columns: 1fr 1fr; }
+      .hero-actions { flex-direction: column; align-items: flex-start; }
+      .gal-grid { grid-template-columns: 1fr 1fr; }
+      .why-cards-unified { grid-template-columns: 1fr 1fr; }
+    }
+
+    /* ── SERVICES (merged from services.html) ─────────────── */
+    .filter-row { display:flex; gap:8px; flex-wrap:nowrap; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; margin-bottom:40px; padding-bottom:4px; }
+    .filter-row::-webkit-scrollbar { display:none; }
+    .filter-btn { display:inline-flex; align-items:center; flex-shrink:0; font-family:var(--font-body); font-size:12px; font-weight:500; padding:8px 16px; border-radius:8px; border:1.5px solid var(--border); background:var(--white); color:var(--text-mid); cursor:pointer; letter-spacing:0.01em; transition:border-color var(--transition), color var(--transition), background var(--transition); }
+    .filter-btn:hover, .filter-btn.active { border-color:var(--brand-blue); color:var(--brand-blue); background:var(--brand-blue-pale); }
+    .filter-btn.active { font-weight:600; }
+    .services-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .svc-card { background:var(--white); border-radius:var(--radius-md); overflow:hidden; border:1px solid var(--border); transition:transform var(--transition), box-shadow var(--transition), border-color var(--transition); display:flex; flex-direction:column; }
+    .svc-card:hover { transform:translateY(-6px); box-shadow:var(--shadow-md); border-color:var(--brand-blue-mid); }
+    .svc-card-img { aspect-ratio:16/9; overflow:hidden; position:relative; }
+    .svc-card-img .img-slot { width:100%; height:100%; }
+    .svc-card:hover .svc-card-img .img-slot img { transform:scale(1.06); }
+    .svc-card-cat { position:absolute; top:14px; left:14px; font-size:10.5px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; background:rgba(0,174,239,0.88); color:var(--white); padding:4px 12px; border-radius:100px; backdrop-filter:blur(8px); }
+    .svc-card-cat.diagnosis { background:rgba(0,174,239,0.75); }
+    .svc-card-cat.gum { background:rgba(0,201,177,0.85); }
+    .svc-card-cat.tmj { background:rgba(245,166,35,0.85); }
+    .svc-card-body { padding:24px 26px 28px; flex:1; display:flex; flex-direction:column; }
+    .svc-card-body h3 { font-family:var(--font-display); font-size:1.2rem; font-weight:700; color:var(--text-dark); margin-bottom:10px; line-height:1.25; }
+    .svc-card-body p { font-size:14px; color:var(--text-mid); line-height:1.7; flex:1; }
+    .svc-card-body ul { margin-top:14px; display:flex; flex-direction:column; gap:7px; }
+    .svc-card-body ul li { display:flex; align-items:flex-start; gap:9px; font-size:13px; color:var(--text-mid); line-height:1.5; }
+    .svc-card-body ul li::before { content:''; display:block; width:5px; height:5px; border-radius:50%; background:var(--brand-blue); flex-shrink:0; margin-top:6px; }
+
+    .svc-card[data-cat] { display:flex; }
+    .svc-card.hidden { display:none; }
+    
+    
+
+    /* Contact */
+    .contact-layout { display:grid; grid-template-columns:1fr 1.1fr; gap:60px; align-items:start; }
+    .contact-info-col { display:flex; flex-direction:column; gap:20px; }
+    .contact-btns { display:flex; flex-direction:column; gap:12px; }
+    .hours-card { background:var(--brand-blue); border-radius:var(--radius-md); padding:28px; color:var(--white); }
+    .hours-card-title { font-size:11px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:rgba(255,255,255,0.65); margin-bottom:18px; }
+    .hours-row { display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.1); font-size:14px; }
+    .hours-row:last-child { border-bottom:none; }
+    .hours-day { color:rgba(255,255,255,0.8); }
+    .hours-time { font-weight:600; color:var(--white); }
+    .map-col { position:sticky; top:calc(var(--nav-height) + 24px); }
+
+    .map-caption { font-size:12.5px; color:var(--text-light); margin-top:12px; text-align:center; }
+    .map-caption a { color:var(--brand-blue); }
+    .btn-white { background:var(--white); color:var(--brand-blue); font-family:var(--font-body); font-size:14px; font-weight:600; padding:15px 32px; border-radius:100px; box-shadow:0 6px 24px rgba(0,0,0,0.12); transition:transform var(--transition), box-shadow var(--transition); display:inline-flex; align-items:center; gap:10px; }
+    .btn-white:hover { transform:translateY(-2px); box-shadow:0 12px 32px rgba(0,0,0,0.18); }
+    .btn-outline-white { background:transparent; color:rgba(255,255,255,0.9); font-family:var(--font-body); font-size:14px; font-weight:600; padding:15px 32px; border-radius:100px; border:1.5px solid rgba(255,255,255,0.45); transition:border-color var(--transition), background var(--transition), transform var(--transition); display:inline-flex; align-items:center; gap:10px; }
+    .btn-outline-white:hover { border-color:rgba(255,255,255,0.9); background:rgba(255,255,255,0.1); transform:translateY(-1px); }
+    /* Responsive additions */
+    @media (max-width:1024px) { .services-grid { grid-template-columns:repeat(2,1fr); } .contact-layout { grid-template-columns:1fr; } .about-hero-grid { grid-template-columns:1fr; gap:44px; } }
+    @media (max-width:768px) { .services-grid { grid-template-columns:repeat(2,1fr) !important; } .svc-card.wide { grid-column:span 1; } .doctor-img-wrap { display:none; } .contact-layout { grid-template-columns:1fr; } .map-col { position:static; } .hours-grid { grid-template-columns:1fr; } }
+    @media (max-width:480px) { .services-grid { grid-template-columns:repeat(2,1fr) !important; } .svc-card-body h3 { font-size:1rem; } .svc-card-body p { display:none; } .svc-card-body ul { display:none; } }
+
+  /* About section — viewport-contained, no overflow */
+  #about {
+    padding: 72px 0;
+    background: var(--off-white);
+  }
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: stretch; /* both cols same height */
+    margin-top: 0;
+  }
+  /* Left card — white bg, photo top, text bottom */
+  .about-left-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+  }
+  .about-photo-wrap {
+    position: relative;
+    height: 380px;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .about-photo-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 35%;
+    display: block;
+  }
+  .about-founder-pill {
+    position: absolute;
+    bottom: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--accent-teal);
+    color: var(--white);
+    border-radius: 100px;
+    padding: 6px 20px;
+    white-space: nowrap;
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    box-shadow: 0 4px 14px rgba(0,201,177,0.45);
+  }
+  .about-left-text {
+    padding: 22px 26px 26px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .about-left-text .section-label { margin-bottom: 8px; }
+  .about-name {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--text-dark); /* uniform — no blue split */
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    margin-bottom: 14px;
+  }
+  .about-left-text p {
+    font-size: 0.875rem;
+    line-height: 1.75;
+    color: var(--text-mid);
+    margin-bottom: 10px;
+  }
+  .about-tags {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+  }
+  .about-tag {
+    background: var(--brand-blue-pale);
+    border: 1px solid var(--brand-blue-mid);
+    border-radius: 100px;
+    padding: 5px 14px;
+    font-size: 11.5px;
+    font-weight: 600;
+    color: var(--brand-blue-deep);
+  }
+  /* Right card — blue bg, full height flex */
+  .about-right-card {
+    background: var(--brand-blue);
+    border-radius: var(--radius-lg);
+    padding: 32px 36px;
+    color: var(--white);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: var(--shadow-md);
+  }
+  .about-right-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.55);
+    margin-bottom: 10px;
+  }
+  .about-right-title {
+    font-family: var(--font-display);
+    font-size: 1.45rem;
+    font-weight: 800;
+    color: var(--white);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    margin-bottom: 20px;
+  }
+  .about-right-card p {
+    font-size: 0.875rem;
+    line-height: 1.75;
+    color: rgba(255,255,255,0.8);
+    margin-bottom: 12px;
+  }
+  .about-right-card p:last-of-type { margin-bottom: 0; }
+  .about-right-divider {
+    border: none;
+    border-top: 1px solid rgba(255,255,255,0.15);
+    margin: 24px 0;
+  }
+  .about-right-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--white);
+    color: var(--brand-blue);
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 700;
+    padding: 13px 28px;
+    border-radius: 100px;
+    text-decoration: none;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    align-self: flex-start;
+  }
+  .about-right-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 28px rgba(0,0,0,0.22);
+  }
+  @media (max-width: 900px) {
+    .about-grid { grid-template-columns: 1fr; gap: 24px; }
+    .about-photo-wrap { height: 220px; }
+    #about { padding: 52px 0 !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Floating WhatsApp -->
+<a href="https://wa.me/919483232606?text=Hello%2C%20I%20would%20like%20to%20book%20an%20appointment%20at%20TwoDots%20Dental%20Clinic." class="float-wa" id="floatWa" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<!-- Google Reviews circle, fixed, above WhatsApp button -->
+<a href="https://maps.app.goo.gl/JYuEAsmwxz5LsnWY7"
+   target="_blank" rel="noopener"
+   class="float-reviews"
+   aria-label="Read our Google Reviews, 5.0 stars">
+  <div class="float-reviews-tooltip">
+    <span class="tooltip-stars">★★★★★</span>
+    <span class="tooltip-text">5.0 · Google Reviews</span>
+  </div>
+  <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+    <path fill="#4285F4" d="M45.12 24.5c0-1.56-.14-3.06-.4-4.5H24v8.51h11.84c-.51 2.75-2.06 5.08-4.39 6.64v5.52h7.11c4.16-3.83 6.56-9.47 6.56-16.17z"/>
+    <path fill="#34A853" d="M24 46c5.94 0 10.92-1.97 14.56-5.33l-7.11-5.52c-1.97 1.32-4.49 2.1-7.45 2.1-5.73 0-10.58-3.87-12.31-9.07H4.34v5.7C7.96 41.07 15.4 46 24 46z"/>
+    <path fill="#FBBC05" d="M11.69 28.18C11.25 26.86 11 25.45 11 24s.25-2.86.69-4.18v-5.7H4.34C2.85 17.09 2 20.45 2 24c0 3.55.85 6.91 2.34 9.88l7.35-5.7z"/>
+    <path fill="#EA4335" d="M24 10.75c3.23 0 6.13 1.11 8.41 3.29l6.31-6.31C34.91 4.18 29.93 2 24 2 15.4 2 7.96 6.93 4.34 14.12l7.35 5.7c1.73-5.2 6.58-9.07 12.31-9.07z"/>
+  </svg>
+</a>
+
+<div class="lightbox" id="lightbox"><button class="lightbox-close" id="lightboxClose">&times;</button><img id="lightboxImg" src="" alt="" /></div>
+
+<!-- ═══════════════════════════════════════════════════════
+     NAV
+════════════════════════════════════════════════════════ -->
+<nav id="navbar" role="navigation" aria-label="Main navigation">
+  <div class="container nav-inner">
+    <a href="#hero" class="nav-logo" aria-label="TwoDots Dental Clinic">
+      <img src="images/logo.jpg" alt="TwoDots Dental Clinic" loading="lazy" />
+    </a>
+    <ul class="nav-links">
+      <li><a href="#hero">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="https://www.eka.care/doctor/vasanthi-1746451218/calendar?rwg_token=AFd1xnGDoGvd1n_m1VkvhZTXFuy7GTWZFJCOXL6IScooagNNdaX1zjBrFenx5l8KGa6YhegzvqdWY1t4249kk9CwStPpiF1kxg%3D%3D" class="nav-cta" target="_blank" rel="noopener">Book Appointment</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="mobile-drawer" id="mobileDrawer">
+  <button class="drawer-close" id="drawerClose" aria-label="Close menu">
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M15 5L5 15M5 5l10 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    Close
+  </button>
+  <a href="#hero">Home</a>
+  <a href="#about">About</a>
+  <a href="#services">Services</a>
+  <a href="#contact">Contact</a>
+  <a href="https://www.eka.care/doctor/vasanthi-1746451218/calendar?rwg_token=AFd1xnGDoGvd1n_m1VkvhZTXFuy7GTWZFJCOXL6IScooagNNdaX1zjBrFenx5l8KGa6YhegzvqdWY1t4249kk9CwStPpiF1kxg%3D%3D" target="_blank" rel="noopener" style="color:var(--brand-blue);">Book Appointment</a>
+</div>
+<div class="drawer-overlay" id="drawerOverlay"></div>
+
+<!-- ═══════════════════════════════════════════════════════
+     HERO
+════════════════════════════════════════════════════════ -->
+<section id="hero">
+
+  <!-- Background gradient base -->
+  <div class="hero-bg" aria-hidden="true"></div>
+
+  <!-- Soft depth blobs -->
+  <div class="hero-blob hero-blob-1" aria-hidden="true"></div>
+  <div class="hero-blob hero-blob-2" aria-hidden="true"></div>
+
+  <!-- Teal left accent line -->
+  <div class="hero-accent-line" aria-hidden="true"></div>
+
+  <!-- Clinic image, cascades in from right, fades into background -->
+  <div class="hero-img-wrap" aria-hidden="true">
+    <img src="images/clinic-workspace.webp"
+         alt="TwoDots Dental Clinic treatment room"
+         loading="eager"
+         fetchpriority="high" />
+  </div>
+
+  <!-- Main content -->
+  <div class="container" style="position:relative;width:100%;">
+    <div class="hero-content">
+
+      <h1 class="hero-h1">
+        The Smile<br><em>You Desire</em>
+      </h1>
+
+      <p class="hero-p">
+        A premium dental clinic in BTM Layout delivering exceptional care across the full spectrum of dental treatments. State-of-the-art technology, highly skilled specialists, and a refined patient-first experience.
+      </p>
+
+      <div class="hero-actions">
+        <a href="https://www.eka.care/doctor/vasanthi-1746451218/calendar?rwg_token=AFd1xnGDoGvd1n_m1VkvhZTXFuy7GTWZFJCOXL6IScooagNNdaX1zjBrFenx5l8KGa6YhegzvqdWY1t4249kk9CwStPpiF1kxg%3D%3D" class="btn-primary" target="_blank" rel="noopener">
+          Book Appointment
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M8 3l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="https://wa.me/919483232606?text=Hello%2C%20I%20would%20like%20to%20get%20in%20touch%20with%20TwoDots%20Dental%20Clinic." class="btn-whatsapp" target="_blank" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> WhatsApp</a>
+      </div>
+
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="stat-num"><span class="count-up" data-target="19">19</span>+</div>
+          <div class="stat-label">Years Experience</div>
+        </div>
+        <div class="hero-stat">
+          <div class="stat-num"><span class="count-up" data-target="6000">6k</span>+</div>
+          <div class="stat-label">Happy Patients</div>
+        </div>
+        <div class="hero-stat">
+          <div class="stat-num"><span class="count-up" data-target="12">12</span>+</div>
+          <div class="stat-label">Services</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Google Reviews circle, above WhatsApp button, see .float-reviews in style.css -->
+
+
+</section>
+
+<!-- Trust strip -->
+<div class="trust-strip" aria-hidden="true">
+  <div class="marquee-track">
+    <span class="marquee-item"><span class="marquee-dot"></span>Root Canal Treatment</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Dental Implants</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Teeth Whitening</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Crowns &amp; Bridges</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Orthodontics</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Cosmetic Dentistry</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Gum Disease Care</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Paediatric Dentistry</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Root Canal Treatment</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Dental Implants</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Teeth Whitening</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Crowns &amp; Bridges</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Orthodontics</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Cosmetic Dentistry</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Gum Disease Care</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Paediatric Dentistry</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     ABOUT
+════════════════════════════════════════════════════════ -->
+
+<section id="about" style="padding-top:72px;padding-bottom:72px;">
+  <div class="container">
+    <div class="about-grid">
+
+      <!-- LEFT: Photo card + founder text -->
+      <div class="about-left-card reveal-left">
+        <div class="about-photo-wrap">
+          <img src="images/doctor.jpg" alt="Dr. Vasanthi Banda, Founder &amp; Chief Dentist" loading="lazy"
+               onerror="this.onerror=null;this.src='images/doctor.jpg'" />
+          <div class="about-founder-pill">Founder &amp; Chief Dentist</div>
+        </div>
+        <div class="about-left-text">
+          <div>
+            <div class="section-label">About Us</div>
+            <div class="about-name">Dr. Vasanthi Banda</div>
+            <p>With 19+ years across Bangalore's most prestigious dental institutions, Dr. Vasanthi founded TwoDots to offer premium, precision-driven care that puts the patient's comfort and long-term health first.</p>
+            <p>A specialist in Advanced Rotary Endodontics, she is dedicated to elevating the patient experience through precise treatments and an exceptional standard of care.</p>
+          </div>
+          <div class="about-tags">
+            <span class="about-tag">Advanced Rotary Endodontics</span>
+            <span class="about-tag">19+ Years Experience</span>
+            <span class="about-tag">Cosmetic &amp; Restorative</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: Specialist network -->
+      <div class="about-right-card reveal-right">
+        <div>
+          <div class="about-right-label">Our Specialist Network</div>
+          <div class="about-right-title">The right specialist<br>for every case</div>
+          <p>TwoDots works with a curated network of highly skilled dental specialists across every discipline. Whatever your concern, we ensure you are seen by the most qualified expert for your specific case with outcomes that are precise, lasting, and exceptional.</p>
+          <p>From routine check-ups to complex full-mouth rehabilitation, our specialist model means you never have to compromise on expertise. Every patient receives care tailored to their exact needs.</p>
+
+          <!-- Map card — hidden on mobile via CSS class -->
+          <!-- class="about-map-card" is hidden at ≤900px -->
+          <a href="https://maps.app.goo.gl/JYuEAsmwxz5LsnWY7" target="_blank" rel="noopener"
+             class="about-map-card"
+             style="display:block;margin-top:20px;border-radius:var(--radius-md);overflow:hidden;height:240px;position:relative;text-decoration:none;flex-shrink:0;">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3889.058451!2d77.6025449!3d12.9072876!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae15b17b42b47f%3A0x0!2sTwoDots%20Dental%20Clinic!5e0!3m2!1sen!2sin!4v1"
+              width="100%" height="240" style="border:none;display:block;pointer-events:none;border-radius:var(--radius-md);"
+              loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Clinic location">
+            </iframe>
+            <!-- Overlay — makes whole card clickable, shows label -->
+            <div style="position:absolute;inset:0;display:flex;align-items:flex-end;padding:10px 14px;background:linear-gradient(to top,rgba(0,0,0,0.45) 0%,transparent 60%);">
+              <div style="display:flex;align-items:center;gap:7px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="white"/></svg>
+                <span style="font-size:12px;font-weight:700;color:var(--white);letter-spacing:0.03em;">Dollars Colony, BTM Layout · Open in Maps</span>
+              </div>
+            </div>
+          </a>
+        </div>
+        <div>
+          <hr class="about-right-divider" />
+          <a href="https://www.eka.care/doctor/vasanthi-1746451218/calendar?rwg_token=AFd1xnGDoGvd1n_m1VkvhZTXFuy7GTWZFJCOXL6IScooagNNdaX1zjBrFenx5l8KGa6YhegzvqdWY1t4249kk9CwStPpiF1kxg%3D%3D"
+             target="_blank" rel="noopener" class="about-right-btn">
+            Book an Appointment
+            <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M8 3l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     SERVICES
+════════════════════════════════════════════════════════ -->
+<section id="services" style="padding:100px 0;background:var(--off-white);">
+  <div class="container">
+    <div style="text-align:center;max-width:600px;margin:0 auto 48px;" class="reveal">
+      <div class="accent-bar" style="margin:0 auto 16px;"></div>
+      <div class="section-label center">Our Services</div>
+      <h2 class="section-title center">Comprehensive <em>dental care</em><br>under one roof</h2>
+      <p style="margin-top:14px;font-size:1rem;color:var(--text-mid);line-height:1.75;">From routine check-ups to advanced restorations, everything your family needs, under one roof in BTM Layout.</p>
+    </div>
+    <div class="filter-row reveal">
+      <button class="filter-btn active" data-filter="all">All Services</button>
+      <button class="filter-btn" data-filter="speciality">Speciality</button>
+      <button class="filter-btn" data-filter="restorative">Restorative</button>
+      <button class="filter-btn" data-filter="cosmetic">Cosmetic</button>
+      <button class="filter-btn" data-filter="preventive">Preventive</button>
+      <button class="filter-btn" data-filter="periodontal">Periodontal</button>
+    </div>
+
+    <div class="services-grid" id="servicesGrid">
+
+      <!-- SERVICE: Root Canal Treatment, wide featured -->
+      <div class="svc-card reveal delay-1" data-cat="speciality">
+        <div class="svc-card-img">
+          <div class="img-slot" style="height:100%;">
+            <img src="images/svc-root-canal.jpg" alt="Root Canal Treatment" loading="lazy" data-lightbox="images/svc-root-canal.jpg" />
+            
+          </div>
+          <span class="svc-card-cat">Speciality</span>
+        </div>
+        <div class="svc-card-body">
+          <h3>Root Canal Treatment</h3>
+          <p>Advanced rotary endodontics saves infected or damaged teeth with precision, efficiency, and structural integrity. Using modern specialized instruments, this treatment thoroughly cleans, seals, and preserves your natural tooth structure.</p>
+          <ul>
+            <li>Single and multi-rooted teeth, anteriors &amp; posteriors</li>
+            <li>Hand and advanced rotary endodontic techniques</li>
+            <li>Re-treatment of failed root canals</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- SERVICE: Crowns & Bridges -->
+      <div class="svc-card reveal delay-2" data-cat="restorative">
+        <div class="svc-card-img">
+          <div class="img-slot" style="height:100%;"><img src="images/svc-crowns.jpg" alt="Crowns and Bridges" loading="lazy" data-lightbox="images/svc-crowns.jpg" /></div>
+          <span class="svc-card-cat">Restorative</span>
+        </div>
+        <div class="svc-card-body">
+          <h3>Crowns &amp; Bridges</h3>
+          <p>Ceramic and zirconia crowns and bridges that restore strength, function, and natural aesthetics. Precision-fabricated to match your natural tooth shade and bite.</p>
+          <ul><li>Metal-free ceramic &amp; zirconia crowns</li><li>Fixed bridges for missing teeth</li><li>Post-RCT crown placement</li></ul>
+        </div>
+      </div>
+
+      <!-- SERVICE: Dental Implants -->
+      <div class="svc-card reveal delay-3" data-cat="restorative">
+        <div class="svc-card-img">
+          <div class="img-slot" style="height:100%;"><img src="images/svc-implants.jpg" alt="Dental Implants" loading="lazy" data-lightbox="images/svc-implants.jpg" /></div>
+          <span class="svc-card-cat">Advanced</span>
+        </div>
+        <div class="svc-card-body">
+          <h3>Dental Implants</h3>
+          <p>The gold standard for replacing missing teeth. Titanium implants fuse with the jawbone to create a permanent, stable foundation for crowns that look and function like natural teeth.</p>
+          <ul><li>Single-tooth &amp; multiple implants</li><li>Implant-supported dentures</li><li>Bone grafting where required</li></ul>
+        </div>
+      </div>
+
+      <!-- SERVICE: Teeth Whitening -->
+      <div class="svc-card reveal delay-1" data-cat="cosmetic">
+        <div class="svc-card-img">
+          <div class="img-slot" style="height:100%;"><img src="images/svc-whitening.jpg" alt="Teeth Whitening" loading="lazy" data-lightbox="images/svc-whitening.jpg" /></div>
+          <span class="svc-card-cat">Cosmetic</span>
+        </div>
+        <div class="svc-card-body">
+          <h3>Teeth Whitening</h3>
+          <p>Professional-grade whitening that delivers visibly brighter results safely. More effective and longer-lasting than over-the-counter products.</p>
+          <ul><li>In-clinic power whitening</li><li>Custom take-home trays</li><li>Safe for sensitive teeth options</li></ul>
+        </div>
+      </div>
+
+      <!-- SERVICE: Orthodontics -->
+      <div class="svc-card reveal delay-2" data-cat="cosmetic">
+        <div class="svc-card-img">
+          <div class="img-slot" style="height:100%;"><img src="images/svc-orthodontics.jpg" alt="Orthodontics" loading="lazy" data-lightbox="images/svc-orthodontics.jpg" /></div>
+          <span class="svc-card-cat">Orthodontics</span>
+        </div>
+        <div class="svc-card-body">
+          <h3>Orthodontics</h3>
+          <p>Straighten your teeth and correct bite issues with traditional braces or modern clear aligner options. Suitable for teens and adults.</p>
+          <ul><li>Metal &amp; ceramic braces</li><li>Clear aligners / invisible braces</li><li>Retainer fabrication &amp; fitting</li></ul>
+        </div>
+      </div>
+
+      <!-- SERVICE: Cosmetic Dentistry -->
+      <div class="svc-card reveal delay-3" data-cat="cosmetic">
+        <div class="svc-card-img">
+          <div class="img-slot" style="height:100%;"><img src="images/svc-cosmetic.jpg" alt="Cosmetic Dentistry" loading="lazy" data-lightbox="images/svc-cosmetic.jpg" /></div>
+          <span class="svc-card-cat">Cosmetic</span>
+        </div>
+        <div class="svc-card-body">
+          <h3>Cosmetic Dentistry</h3>
+          <p>Complete smile makeovers using veneers, bonding, contouring, and other aesthetic treatments. Subtle enhancements or transformative results, designed around you.</p>
+          <ul><li>Porcelain veneers</li><li>Composite bonding</li><li>Gum contouring &amp; smile design</li></ul>
+        </div>
+      </div>
+
+      <!-- SERVICE: Fillings & Restorations -->
+      <div class="svc-card reveal delay-1" data-cat="restorative">
+        <div class="svc-card-img">
+          <div class="img-slot" style="height:100%;"><img src="images/svc-fillings.jpg" alt="Fillings and Restorations" loading="lazy" data-lightbox="images/svc-fillings.jpg" /></div>
+          <span class="svc-card-cat">Restorative</span>
+        </div>
+        <div class="svc-card-body">
+          <h3>Fillings &amp; Restorations</h3>
+          <p>Tooth-coloured composite and ceramic fillings that blend seamlessly with your natural teeth. Strong, durable, and completely invisible.</p>
+          <ul><li>Composite (tooth-coloured) fillings</li><li>Ceramic inlays &amp; onlays</li><li>Replacement of old amalgam fillings</li></ul>
+        </div>
+      </div>
+
+      <!-- SERVICE: Cleaning & Prevention -->
+      <div class="svc-card reveal delay-2" data-cat="preventive">
+        <div class="svc-card-img">
+          <div class="img-slot" style="height:100%;"><img src="images/svc-cleaning.jpg" alt="Teeth Cleaning and Prevention" loading="lazy" data-lightbox="images/svc-cleaning.jpg" /></div>
+          <span class="svc-card-cat">Preventive</span>
+        </div>
+        <div class="svc-card-body">
+          <h3>Cleaning &amp; Prevention</h3>
+          <p>Regular professional cleaning is the foundation of long-term oral health. Our comprehensive hygiene appointments go well beyond a surface clean.</p>
+          <ul><li>Scaling &amp; root planing</li><li>Professional polishing</li><li>Fluoride treatment &amp; sealants</li></ul>
+        </div>
+      </div>
+
+      <!-- SERVICE: Tooth Extractions -->
+      <div class="svc-card reveal delay-3" data-cat="speciality">
+        <div class="svc-card-img">
+          <div class="img-slot" style="height:100%;"><img src="images/svc-extractions.jpg" alt="Tooth Extractions" loading="lazy" data-lightbox="images/svc-extractions.jpg" /></div>
+          <span class="svc-card-cat">Surgical</span>
+        </div>
+        <div class="svc-card-body">
+          <h3>Tooth Extractions</h3>
+          <p>Simple and surgical extractions performed with precision and care, minimising trauma and discomfort. Wisdom tooth removal included.</p>
+          <ul><li>Simple &amp; surgical extractions</li><li>Wisdom tooth removal</li><li>Post-extraction care guidance</li></ul>
+        </div>
+      </div>
+
+      <!-- SERVICE: Paediatric Dentistry -->
+      <div class="svc-card reveal delay-1" data-cat="preventive">
+        <div class="svc-card-img">
+          <div class="img-slot" style="height:100%;"><img src="images/svc-paediatric.jpg" alt="Paediatric Dentistry" loading="lazy" data-lightbox="images/svc-paediatric.jpg" /></div>
+          <span class="svc-card-cat">Preventive</span>
+        </div>
+        <div class="svc-card-body">
+          <h3>Paediatric Dentistry</h3>
+          <p>Child-friendly dental care that builds healthy habits for life. We make first dental visits positive, comfortable, and fun for young patients.</p>
+          <ul><li>Child check-ups &amp; cleanings</li><li>Milk tooth treatment &amp; extractions</li><li>Pit &amp; fissure sealants</li></ul>
+        </div>
+      </div>
+
+      <!-- SERVICE: Dentures & Prosthetics -->
+      <div class="svc-card reveal delay-2" data-cat="restorative">
+        <div class="svc-card-img">
+          <div class="img-slot" style="height:100%;"><img src="images/svc-dentures.jpg" alt="Dentures and Prosthetics" loading="lazy" data-lightbox="images/svc-dentures.jpg" /></div>
+          <span class="svc-card-cat">Restorative</span>
+        </div>
+        <div class="svc-card-body">
+          <h3>Dentures &amp; Prosthetics</h3>
+          <p>Full and partial dentures crafted for comfort, function, and a natural appearance. Removable and fixed options available.</p>
+          <ul><li>Complete &amp; partial dentures</li><li>Flexible &amp; metal-frame dentures</li><li>Denture relines &amp; repairs</li></ul>
+        </div>
+      </div>
+
+      <!-- SERVICE: General Dentistry -->
+      <div class="svc-card reveal delay-1" data-cat="preventive">
+        <div class="svc-card-img">
+          <div class="img-slot" style="height:100%;"><img src="images/svc-general.jpg" alt="General Dentistry" loading="lazy" data-lightbox="images/svc-general.jpg" /></div>
+          <span class="svc-card-cat">General</span>
+        </div>
+        <div class="svc-card-body">
+          <h3>General Dentistry</h3>
+          <p>Your premium entry point to complete oral health. Thorough check-ups, precise diagnosis using digital X-rays, and professional deep cleaning to keep your smile healthy for life.</p>
+          <ul><li>Comprehensive oral examination &amp; OPG X-rays</li><li>Personalised treatment planning</li><li>Professional scaling, polishing &amp; fluoride treatment</li><li>Preventive care &amp; oral hygiene guidance</li></ul>
+        </div>
+      </div>
+
+      <!-- SERVICE: Gum Disease -->
+      <div class="svc-card reveal delay-3" data-cat="periodontal">
+        <div class="svc-card-img">
+          <div class="img-slot" style="height:100%;"><img src="images/svc-gum.jpg" alt="Gum Disease Treatment" loading="lazy" /></div>
+          <span class="svc-card-cat gum">Periodontal</span>
+        </div>
+        <div class="svc-card-body">
+          <h3>Gum Disease Care</h3>
+          <p>Diagnosis and comprehensive treatment of gum disease, from gingivitis to advanced periodontitis, to protect your oral health long-term.</p>
+          <ul><li>Gingivitis and periodontitis treatment</li><li>Deep scaling and curettage</li><li>Gum health maintenance plans</li></ul>
+        </div>
+      </div>
+
+
+    </div><!-- /services-grid -->
+
+  </div>
+</section>
+  </div>
+
+<!-- ═══════════════════════════════════════════════════════
+     WHY TWODOTS
+════════════════════════════════════════════════════════ -->
+<section id="why">
+  <div class="container">
+    <!-- Text header, two column -->
+    <div class="why-grid reveal">
+      <div class="why-body">
+        <div class="section-label">Why TwoDots</div>
+        <h2 class="section-title">Where <em>precision</em><br>meets comfort</h2>
+        <p>Exceptional dentistry is about far more than the procedure. It's about trust, an elevated experience, and the confidence that you're in the most capable hands in Bangalore.</p>
+      </div>
+      <div></div>
+    </div>
+    <!-- Unified 4-column card grid, all 8 cards share the same rows -->
+    <div class="why-cards-unified" style="margin-top:40px;">
+      <div class="why-feat reveal delay-1"><div class="why-feat-icon">🔬</div><h4>Advanced Technology</h4><p>State-of-the-art rotary endodontic systems and digital imaging.</p></div>
+      <div class="why-feat reveal delay-2"><div class="why-feat-icon">❤️</div><h4>Patient-First</h4><p>Personalised attention. No rush, no shortcuts.</p></div>
+      <div class="why-num-card why-num-mobile-hide reveal delay-3"><div class="why-big"><span class="count-up" data-target="19">19</span>+</div><div class="why-label">Years of combined expertise</div></div>
+      <div class="why-num-card why-num-mobile-hide reveal delay-4"><div class="why-big"><span class="count-up" data-target="6000">6k</span>+</div><div class="why-label">Happy patients served</div></div>
+      <div class="why-feat reveal delay-3"><div class="why-feat-icon">💎</div><h4>Premium Materials</h4><p>Highest-grade dental materials for restorations that last decades.</p></div>
+      <div class="why-feat reveal delay-4"><div class="why-feat-icon">📚</div><h4>Continuous Learning</h4><p>Dr. Vasanthi stays at the forefront of dental advancements.</p></div>
+      <div class="why-num-card why-num-mobile-hide reveal delay-5"><div class="why-big"><span class="count-up" data-target="12">12</span>+</div><div class="why-label">Dental services offered</div></div>
+      <div class="why-num-card why-num-mobile-hide reveal delay-6"><div class="why-big">5.0</div><div class="why-label">Google rating, verified reviews</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════
+     GALLERY STRIP
+════════════════════════════════════════════════════════ -->
+<section id="gallery-strip">
+  <div class="container">
+    <div class="gal-header">
+      <div>
+        <div class="accent-bar reveal"></div>
+        <div class="section-label reveal">Our Clinic</div>
+        <h2 class="section-title reveal">Inside <em>TwoDots</em></h2>
+      </div>
+      <p class="reveal" style="max-width:300px;font-size:14.5px;color:var(--text-light);line-height:1.7;">A modern space where clinical precision meets patient comfort.</p>
+    </div>
+    <div class="gal-grid">
+      <div class="gal-item reveal delay-1"><div class="img-slot"><img src="images/gallery-1.jpg" alt="TwoDots Dental Clinic treatment room" loading="lazy" data-lightbox="images/gallery-1.jpg" /></div><div class="gal-overlay"><span>Treatment Room</span></div></div>
+      <div class="gal-item reveal delay-2"><div class="img-slot"><img src="images/gallery-2.jpg" alt="Modern dental chair" loading="lazy" data-lightbox="images/gallery-2.jpg" /></div><div class="gal-overlay"><span>Dental Suite</span></div></div>
+      <div class="gal-item reveal delay-3"><div class="img-slot"><img src="images/gallery-3.jpg" alt="Bright clinic interior" loading="lazy" data-lightbox="images/gallery-3.jpg" /></div><div class="gal-overlay"><span>Clinic Interior</span></div></div>
+      <div class="gal-item reveal delay-4"><div class="img-slot"><img src="images/gallery-4.jpg" alt="Advanced dental equipment" loading="lazy" data-lightbox="images/gallery-4.jpg" /></div><div class="gal-overlay"><span>Advanced Equipment</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════
+     TESTIMONIALS
+════════════════════════════════════════════════════════ -->
+<section id="testimonials">
+  <div class="container">
+    <div style="text-align:center;margin-bottom:48px;" class="reveal">
+      <div class="accent-bar" style="margin:0 auto 16px;"></div>
+      <div class="section-label center">What Patients Say</div>
+      <h2 class="section-title center">Real stories from<br><em>real patients</em></h2>
+    </div>
+    <div class="testimonials-track-wrap reveal">
+      <div class="testimonials-track" id="testimonialsTrack">
+
+        <div class="testimonial-card">
+          <div class="testimonial-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+          <p class="testimonial-text">"We both husband and wife visited this dental clinic for the first time. We are extremely happy to note that both the doctor as well as her assistant are extremely good in service, treatment and courtesy. They know very well the pulse of senior people and extend a warm and courteous atmosphere all around."</p>
+          <div class="testimonial-author"><div class="author-avatar">S</div><div><div class="author-name">Senior Patient</div><div class="author-meta">3 months ago</div></div></div>
+        </div>
+
+        <div class="testimonial-card">
+          <div class="testimonial-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+          <p class="testimonial-text">"I got my tooth extraction done here and it has been a brilliant experience. I was quite anxious about the procedure but the doctor was reassuring, empathetic, patient and meticulous in her approach, which made the process smooth and free from complications. Would definitely recommend!"</p>
+          <div class="testimonial-author"><div class="author-avatar">C</div><div><div class="author-name">Chandan N</div><div class="author-meta">Local Guide · 4 months ago</div></div></div>
+        </div>
+
+        <div class="testimonial-card">
+          <div class="testimonial-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+          <p class="testimonial-text">"Dr. Vasanthi is great. I have a lot of trauma from dental issues as a kid, and she was very patient with me. She also explains whatever the issue is in detail. My root canal and wisdom tooth extraction procedures were also almost painless."</p>
+          <div class="testimonial-author"><div class="author-avatar">A</div><div><div class="author-name">Atharva Shekatkar</div><div class="author-meta">5 months ago</div></div></div>
+        </div>
+
+        <div class="testimonial-card">
+          <div class="testimonial-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+          <p class="testimonial-text">"Modern and caring, highly recommend. This is her new location and I have been coming to her for many years at her old location. Your appointment experience will be top notch. They treat you like king."</p>
+          <div class="testimonial-author"><div class="author-avatar">H</div><div><div class="author-name">Harshawardhan Banda</div><div class="author-meta">Local Guide · 1 year ago</div></div></div>
+        </div>
+
+        <div class="testimonial-card">
+          <div class="testimonial-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+          <p class="testimonial-text">"Hygienic, affordable, professional, and a quality Dental Clinic! The doctor is professional and has a great hand when it comes to dental care."</p>
+          <div class="testimonial-author"><div class="author-avatar">C</div><div><div class="author-name">Chinmay Kshirsagar</div><div class="author-meta">Local Guide · 1 year ago</div></div></div>
+        </div>
+
+        <div class="testimonial-card">
+          <div class="testimonial-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+          <p class="testimonial-text">"I recently visited here for my kid. I had a very good experience. The doctor's behaviour was very calm, composed and friendly. She explained the child tooth health condition and treatment in detail."</p>
+          <div class="testimonial-author"><div class="author-avatar">S</div><div><div class="author-name">Shashank Mani Tripathi</div><div class="author-meta">7 months ago</div></div></div>
+        </div>
+
+        <div class="testimonial-card">
+          <div class="testimonial-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+          <p class="testimonial-text">"Dr. Vasanthi is a gem. The process of tooth extraction was very smooth, painless, and the cherry on the top is the price of the procedure is very pocket friendly."</p>
+          <div class="testimonial-author"><div class="author-avatar">I</div><div><div class="author-name">Ishor Das</div><div class="author-meta">5 months ago</div></div></div>
+        </div>
+
+        <div class="testimonial-card">
+          <div class="testimonial-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+          <p class="testimonial-text">"Dr Vasanthi has been my dentist since last 5 years, and is a very good and knowledgeable doctor. She is clear with her communication and has always explained my dental issues in a manner easy to understand. Her clinic is equipped with state of art modern medical equipment."</p>
+          <div class="testimonial-author"><div class="author-avatar">P</div><div><div class="author-name">Punit Sarda</div><div class="author-meta">Local Guide · 1 year ago</div></div></div>
+        </div>
+
+        <div class="testimonial-card">
+          <div class="testimonial-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+          <p class="testimonial-text">"Absolutely amazing experience! The staff is warm, professional, and truly care about your comfort. I have never felt more at ease during a dental visit. Highly recommend!"</p>
+          <div class="testimonial-author"><div class="author-avatar">S</div><div><div class="author-name">Sandesh</div><div class="author-meta">1 year ago</div></div></div>
+        </div>
+
+
+        <div class="testimonial-card">
+          <div class="testimonial-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+          <p class="testimonial-text">"Professional, caring, and efficient! The team made me feel comfortable throughout, and the clinic's cleanliness and technology stood out. Highly recommended!"</p>
+          <div class="testimonial-author"><div class="author-avatar">A</div><div><div class="author-name">Ashwini Shri</div><div class="author-meta">1 year ago</div></div></div>
+        </div>
+
+        <div class="testimonial-card">
+          <div class="testimonial-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+          <p class="testimonial-text">"Clean and hygienic place. The doctor is experienced and did a wonderful treatment. No pain after root canal treatment. Best dental clinic in NS Palya and Dollars Layout BTM area."</p>
+          <div class="testimonial-author"><div class="author-avatar">G</div><div><div class="author-name">Gopalakrishna HS</div><div class="author-meta">1 year ago</div></div></div>
+        </div>
+
+      </div>
+    </div>
+    <!-- Navigation -->
+    <div class="testimonials-nav reveal">
+      <button class="testimonials-btn" id="tPrev" aria-label="Previous review">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="testimonials-dots" id="tDots"></div>
+      <button class="testimonials-btn" id="tNext" aria-label="Next review">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- ═══════════════════════════════════════════════════════
+     CONTACT
+════════════════════════════════════════════════════════ -->
+<section id="contact" style="padding:80px 0;background:var(--off-white);">
+  <div class="container">
+    <div style="margin-bottom:48px;" class="reveal">
+      <div class="section-label">Get in Touch</div>
+      <h2 class="section-title">Come see us in<br><em>BTM Layout</em></h2>
+    </div>
+    <div class="contact-layout">
+
+      <!-- LEFT: contact info + hours + buttons -->
+      <div class="contact-info-col">
+
+        <!-- Phone -->
+        <div class="contact-info-card reveal">
+          <div class="contact-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z" fill="#00AEEF"/></svg></div>
+          <div><div class="contact-info-label">Phone &amp; WhatsApp</div><div class="contact-info-value"><a href="tel:+919483232606" style="color:var(--text-dark);">+91 94832 32606</a></div><div class="contact-info-sub">Call or message during clinic hours</div></div>
+        </div>
+
+        <!-- Address -->
+        <div class="contact-info-card reveal delay-1">
+          <div class="contact-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="#00AEEF"/></svg></div>
+          <div>
+            <div class="contact-info-label">Address</div>
+            <div class="contact-info-value">Dollars Colony, BTM Layout<br>Bangalore, Karnataka 560 076</div>
+            <div class="contact-info-sub"><a href="https://maps.app.goo.gl/JYuEAsmwxz5LsnWY7" target="_blank" rel="noopener" style="color:var(--brand-blue);">Get directions on Google Maps →</a></div>
+          </div>
+        </div>
+
+        <!-- Hours -->
+        <div class="hours-card reveal delay-2">
+          <div class="hours-card-title">Clinic Hours</div>
+          <div class="hours-row"><span class="hours-day">Monday – Saturday</span><span class="hours-time">10:00 AM – 7:00 PM</span></div>
+          <div class="hours-row"><span class="hours-day">Sunday</span><span class="hours-time" style="color:rgba(255,255,255,0.7);font-weight:600;">By Appointment Only</span></div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="contact-btns reveal delay-3">
+          <a href="https://www.eka.care/doctor/vasanthi-1746451218/calendar?rwg_token=AFd1xnGDoGvd1n_m1VkvhZTXFuy7GTWZFJCOXL6IScooagNNdaX1zjBrFenx5l8KGa6YhegzvqdWY1t4249kk9CwStPpiF1kxg%3D%3D" class="btn-primary" target="_blank" rel="noopener">Book Appointment <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M8 3l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+          <a href="https://wa.me/919483232606?text=Hello%2C%20I%20would%20like%20to%20book%20an%20appointment%20at%20TwoDots%20Dental%20Clinic." class="btn-whatsapp" target="_blank" rel="noopener"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> WhatsApp Us</a>
+          <a href="tel:+919483232606" class="btn-call"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z" fill="#00AEEF"/></svg> Call Us</a>
+        </div>
+
+      </div>
+
+      <!-- RIGHT: clinic exterior photo — full height, no map -->
+      <div class="contact-img-col reveal-right">
+        <div class="contact-exterior-wrap">
+          <img src="images/clinic-exterior.jpg" alt="TwoDots Dental Clinic, Dollars Colony, BTM Layout" loading="lazy" />
+          <div class="contact-exterior-overlay">
+            <div class="contact-exterior-badge">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="white"/></svg>
+              <span>Dollars Colony, BTM Layout, Bangalore</span>
+            </div>
+            <a href="https://maps.app.goo.gl/JYuEAsmwxz5LsnWY7" target="_blank" rel="noopener" class="contact-exterior-link">
+              Open in Google Maps →
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CTA BAND -->
+<section style="padding:80px 0;background:var(--off-white);">
+  <div class="container" style="text-align:center;">
+    <div class="reveal">
+      <div class="accent-bar" style="margin:0 auto 18px;"></div>
+      <p style="font-size:11.5px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--brand-blue);margin-bottom:14px;">Get Started Today</p>
+      <h2 style="font-family:var(--font-display);font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;line-height:1.2;color:var(--text-dark);margin-bottom:18px;letter-spacing:-0.02em;">Ready for your <em style="font-style:normal;color:var(--brand-blue);">perfect smile?</em></h2>
+      <p style="font-size:1rem;color:var(--text-mid);max-width:480px;margin:0 auto 36px;line-height:1.75;">Book an appointment at TwoDots Dental Clinic. Open Monday to Saturday, 10AM to 7PM. Sundays by appointment.</p>
+      <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
+        <a href="https://www.eka.care/doctor/vasanthi-1746451218/calendar?rwg_token=AFd1xnGDoGvd1n_m1VkvhZTXFuy7GTWZFJCOXL6IScooagNNdaX1zjBrFenx5l8KGa6YhegzvqdWY1t4249kk9CwStPpiF1kxg%3D%3D" class="btn-primary" target="_blank" rel="noopener">Book Appointment <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M8 3l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <a href="https://wa.me/919483232606?text=Hello%2C%20I%20have%20a%20query%20for%20TwoDots%20Dental%20Clinic." class="btn-whatsapp" target="_blank" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> WhatsApp</a>
+        <a href="tel:+919483232606" class="btn-call"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z" fill="#00AEEF"/></svg> Call Us</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand-row">
+          <img src="images/logo.jpg" alt="TwoDots Dental Clinic" class="footer-logo" loading="lazy" />
+        </div>
+        <p class="footer-tagline">The Smile You Desire. A comprehensive dental clinic in Dollars Colony, BTM Layout, Bangalore.</p>
+      </div>
+      <div class="footer-nav-col"><div class="footer-col-title">Navigation</div><ul class="footer-col-links"><li><a href="#hero">Home</a></li><li><a href="#about">About</a></li><li><a href="#services">Services</a></li><li><a href="#contact">Contact</a></li></ul></div>
+      <div class="footer-services-col"><div class="footer-col-title">Services</div><ul class="footer-col-links"><li><a href="#services">Root Canal Treatment</a></li><li><a href="#services">Crowns &amp; Bridges</a></li><li><a href="#services">Dental Implants</a></li><li><a href="#services">Teeth Whitening</a></li><li><a href="#services">Orthodontics</a></li></ul></div>
+      <div><div class="footer-col-title">Contact</div><ul class="footer-col-links"><li><a href="tel:+919483232606">+91 94832 32606</a></li><li style="color:rgba(255,255,255,0.5);font-size:14px;">Dollars Colony, BTM Layout<br>Bangalore, Karnataka</li><li style="color:rgba(255,255,255,0.5);font-size:14px;">Mon–Sat: 10AM – 7PM<br>Sun: By Appointment</li></ul></div>
+    </div>
+    <div class="footer-bottom">
+      <p>© <span id="footerYear"></span> TwoDots Dental Clinic. All rights reserved.</p>
+      <a href="https://wa.me/919483232606" target="_blank" rel="noopener">Book via WhatsApp →</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Testimonials slider — recalculates card width after fonts load to prevent misalignment
+(function() {
+  const track = document.getElementById('testimonialsTrack');
+  const dotsWrap = document.getElementById('tDots');
+  if (!track) return;
+  const cards = track.querySelectorAll('.testimonial-card');
+  const total = cards.length;
+  let current = 0;
+  let autoTimer = null;
+
+  cards.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 't-dot' + (i === 0 ? ' active' : '');
+    d.addEventListener('click', () => { goTo(i); resetAuto(); });
+    dotsWrap.appendChild(d);
+  });
+
+  function getCardW() {
+    // Always measure live — correct after fonts/layout settle
+    return cards[0].getBoundingClientRect().width + 24;
+  }
+
+  function goTo(n) {
+    current = (n + total) % total;
+    track.style.transform = `translateX(-${current * getCardW()}px)`;
+    dotsWrap.querySelectorAll('.t-dot').forEach((d, i) => d.classList.toggle('active', i === current));
+  }
+
+  function resetAuto() {
+    clearInterval(autoTimer);
+    autoTimer = setInterval(() => goTo(current + 1), 5000);
+  }
+
+  document.getElementById('tNext').addEventListener('click', () => { goTo(current + 1); resetAuto(); });
+  document.getElementById('tPrev').addEventListener('click', () => { goTo(current - 1); resetAuto(); });
+
+  // Recalculate on resize (orientation change etc.)
+  window.addEventListener('resize', () => goTo(current), { passive: true });
+
+  // Start after fonts settle
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(() => goTo(0));
+  }
+  resetAuto();
+})();
+</script>
+<script>
+// Filter functionality
+const filterBtns = document.querySelectorAll('.filter-btn');
+const cards = document.querySelectorAll('.svc-card[data-cat]');
+filterBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    filterBtns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const filter = btn.dataset.filter;
+    cards.forEach(card => {
+      card.classList.toggle('hidden', filter !== 'all' && card.dataset.cat !== filter);
+    });
+  });
+});
+</script>
+<script src="js/main.js"></script>
+</body>
+</html>
